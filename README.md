@@ -1,3 +1,5 @@
+# This is a port to github of the https://sourceforge.net/projects/css2xslfo/ project
+
 Release Notes CSSToXSLFO 1.6.2
 23 August 2010
 
