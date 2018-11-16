@@ -1,0 +1,247 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project name="CSSToXSLFO" basedir="." default="all">
+
+  <property name="version" value="1_6_2" />
+  <property name="view" value="csstoxslfo_release" />
+
+  <taskdef name="webdav-sync" classname="be.re.webdav.cmd.SyncAntTask" classpath="${user.home}/bin/webdav_sync.jar" />
+
+  <fileset id="compile-classpath" dir="lib">
+    <include name="flute.jar" />
+    <include name="sac.jar" />
+    <include name="stax-api-1.0.1.jar" />
+  </fileset>
+
+  <patternset id="lib-include">
+    <include name="lib/flute.jar" />
+    <include name="lib/sac.jar" />
+    <include name="lib/stax-api-1.0.1.jar" />
+  </patternset>
+
+  <!-- Main targets -->
+  <target name="all" depends="xslfo" />
+
+  <target name="release">
+    <antcall target="clean" />
+    <antcall target="xslfo" />
+    <antcall target="clean" />
+    <antcall target="xep" />
+    <antcall target="clean" />
+    <antcall target="xsl" />
+    <antcall target="clean" />
+    <antcall target="fop" />
+    <antcall target="clean" />
+    <antcall target="fopnew" />
+    <antcall target="clean" />
+    <antcall target="xinc" />
+    <antcall target="pack-source" />
+    <antcall target="clean" />
+  </target>
+
+  <target name="build" depends="compile-css2xslfo,copy-resources" />
+  <target name="build-xep" depends="compile-css2xep,copy-resources" />
+  <target name="build-xsl" depends="compile-css2xsl,copy-resources" />
+  <target name="build-fop" depends="compile-css2fop,copy-resources" />
+  <target name="build-fopnew" depends="compile-css2fopnew,copy-resources" />
+  <target name="build-xinc" depends="compile-css2xinc,copy-resources" />
+
+  <target name="clean">
+    <delete dir="classes" />
+  </target>
+
+  <target name="compile-css2xslfo" depends="init">
+    <javac debug="on" debuglevel="lines,vars,source" srcdir="src" destdir="classes">
+      <classpath>
+        <fileset refid="compile-classpath" />
+      </classpath>
+      <exclude name="be/re/css/CSSToXEP.java" />
+      <exclude name="be/re/css/CSSToXSLFormatter.java" />
+      <exclude name="be/re/css/CSSToFOP.java" />
+      <exclude name="be/re/css/CSSToFOPNew.java" />
+      <exclude name="be/re/css/CSSToXinc.java" />
+      <exclude name="be/re/css/ant/CSSToXEP.java" />
+      <exclude name="be/re/css/ant/CSSToXSLFormatter.java" />
+      <exclude name="be/re/css/ant/CSSToFOP.java" />
+      <exclude name="be/re/css/ant/CSSToFOPNew.java" />
+      <exclude name="be/re/css/ant/CSSToXinc.java" />
+    </javac>
+  </target>
+
+  <target name="compile-css2xep" depends="init">
+    <javac debug="on" debuglevel="lines,vars,source" srcdir="src" destdir="classes">
+      <classpath>
+        <fileset refid="compile-classpath" />
+        <fileset file="lib/xep.jar" />
+      </classpath>
+      <exclude name="be/re/css/CSSToXSLFO.java" />
+      <exclude name="be/re/css/CSSToXSLFormatter.java" />
+      <exclude name="be/re/css/CSSToFOP.java" />
+      <exclude name="be/re/css/CSSToFOPNew.java" />
+      <exclude name="be/re/css/CSSToXinc.java" />
+      <exclude name="be/re/css/ant/CSSToXSLFO.java" />
+      <exclude name="be/re/css/ant/CSSToXSLFormatter.java" />
+      <exclude name="be/re/css/ant/CSSToFOP.java" />
+      <exclude name="be/re/css/ant/CSSToFOPNew.java" />
+      <exclude name="be/re/css/ant/CSSToXinc.java" />
+    </javac>
+  </target>
+
+  <target name="compile-css2xsl" depends="init">
+    <javac debug="on" debuglevel="lines,vars,source" srcdir="src" destdir="classes">
+      <classpath>
+        <fileset refid="compile-classpath" />
+        <fileset file="lib/XfoJavaCtl.jar" />
+      </classpath>
+      <exclude name="be/re/css/CSSToXEP.java" />
+      <exclude name="be/re/css/CSSToXSLFO.java" />
+      <exclude name="be/re/css/CSSToFOP.java" />
+      <exclude name="be/re/css/CSSToFOPNew.java" />
+      <exclude name="be/re/css/CSSToXinc.java" />
+      <exclude name="be/re/css/ant/CSSToXEP.java" />
+      <exclude name="be/re/css/ant/CSSToXSLFO.java" />
+      <exclude name="be/re/css/ant/CSSToFOP.java" />
+      <exclude name="be/re/css/ant/CSSToFOPNew.java" />
+      <exclude name="be/re/css/ant/CSSToXinc.java" />
+    </javac>
+  </target>
+
+  <target name="compile-css2fop" depends="init">
+    <javac debug="on" debuglevel="lines,vars,source" srcdir="src" destdir="classes">
+      <classpath>
+        <fileset refid="compile-classpath" />
+        <fileset file="lib/fop-must-come-after-new-0.20.5.jar" />
+        <fileset file="lib/avalon-framework-4.2.0.jar" />
+      </classpath>
+      <exclude name="be/re/css/CSSToXEP.java" />
+      <exclude name="be/re/css/CSSToXSLFormatter.java" />
+      <exclude name="be/re/css/CSSToXSLFO.java" />
+      <exclude name="be/re/css/CSSToFOPNew.java" />
+      <exclude name="be/re/css/CSSToXinc.java" />
+      <exclude name="be/re/css/ant/CSSToXEP.java" />
+      <exclude name="be/re/css/ant/CSSToXSLFormatter.java" />
+      <exclude name="be/re/css/ant/CSSToXSLFO.java" />
+      <exclude name="be/re/css/ant/CSSToFOPNew.java" />
+      <exclude name="be/re/css/ant/CSSToXinc.java" />
+    </javac>
+  </target>
+
+  <target name="compile-css2fopnew" depends="init">
+    <javac debug="on" debuglevel="lines,vars,source" srcdir="src" destdir="classes">
+      <classpath>
+        <fileset refid="compile-classpath" />
+        <fileset file="lib/fop-1.0.jar" />
+        <fileset file="lib/avalon-framework-4.2.0.jar" />
+      </classpath>
+      <exclude name="be/re/css/CSSToXEP.java" />
+      <exclude name="be/re/css/CSSToXSLFormatter.java" />
+      <exclude name="be/re/css/CSSToFOP.java" />
+      <exclude name="be/re/css/CSSToXSLFO.java" />
+      <exclude name="be/re/css/CSSToXinc.java" />
+      <exclude name="be/re/css/ant/CSSToXEP.java" />
+      <exclude name="be/re/css/ant/CSSToXSLFormatter.java" />
+      <exclude name="be/re/css/ant/CSSToFOP.java" />
+      <exclude name="be/re/css/ant/CSSToXSLFO.java" />
+      <exclude name="be/re/css/ant/CSSToXinc.java" />
+    </javac>
+  </target>
+
+  <target name="compile-css2xinc" depends="init">
+    <javac debug="on" debuglevel="lines,vars,source" srcdir="src" destdir="classes">
+      <classpath>
+        <fileset refid="compile-classpath" />
+        <fileset file="lib/xinc.jar" />
+      </classpath>
+      <exclude name="be/re/css/CSSToXEP.java" />
+      <exclude name="be/re/css/CSSToXSLFormatter.java" />
+      <exclude name="be/re/css/CSSToFOP.java" />
+      <exclude name="be/re/css/CSSToFOPNew.java" />
+      <exclude name="be/re/css/CSSToXSLFO.java" />
+      <exclude name="be/re/css/ant/CSSToXEP.java" />
+      <exclude name="be/re/css/ant/CSSToXSLFormatter.java" />
+      <exclude name="be/re/css/ant/CSSToFOP.java" />
+      <exclude name="be/re/css/ant/CSSToFOPNew.java" />
+      <exclude name="be/re/css/ant/CSSToXSLFO.java" />
+    </javac>
+  </target>
+
+  <target name="copy-resources" depends="init">
+    <copy todir="classes">
+      <fileset dir="src" includes="be/**,catalog,xhtml1/**" excludes="**/*.java" />
+    </copy>
+  </target>
+
+  <target name="init">
+    <tstamp />
+    <mkdir dir="classes" />
+    <mkdir dir="bin" />
+    <webdav-sync url="https://werner@re.pincette.net/view/${view}/java/src/" directory="src" direction="down" />
+    <webdav-sync url="https://werner@re.pincette.net/view/${view}/java/lib/" directory="lib" direction="down" />
+    <webdav-sync url="https://werner@re.pincette.net/view/${view}/java/applications/css2xslfo/doc/" directory="doc" direction="down" />
+    <webdav-sync url="https://werner@re.pincette.net/view/${view}/java/applications/css2xslfo/res/" directory="res" direction="down" />
+    <webdav-sync url="https://werner@re.pincette.net/view/${view}/java/applications/css2xslfo/lib_src/" directory="lib_src" direction="down" />
+    <webdav-sync url="https://werner@re.pincette.net/view/${view}/dtd/" directory="dtd" direction="down" />
+  </target>
+
+  <target name="jar">
+    <jar destfile="bin/${variant}${version}.jar" manifest="res/MANIFEST_${variant}.MF">
+      <fileset dir="classes" />
+      <zipgroupfileset dir=".">
+        <patternset refid="lib-include" />
+      </zipgroupfileset>
+      <fileset dir="src">
+        <include name="META-INF/**" />
+      </fileset>
+      <fileset dir="res">
+        <include name="release_notes.txt" />
+        <include name="LICENCE" />
+        <include name="W3C_COPYRIGHT.html" />
+      </fileset>
+    </jar>
+  </target>
+
+  <target name="xslfo" depends="clean,build">
+    <antcall target="jar">
+      <param name="variant" value="css2xslfo" />
+    </antcall>
+  </target>
+
+  <target name="xep" depends="clean,build-xep">
+    <antcall target="jar">
+      <param name="variant" value="css2xep" />
+    </antcall>
+  </target>
+
+  <target name="xsl" depends="clean,build-xsl">
+    <antcall target="jar">
+      <param name="variant" value="css2xsl" />
+    </antcall>
+  </target>
+
+  <target name="fop" depends="clean,build-fop">
+    <antcall target="jar">
+      <param name="variant" value="css2fop" />
+    </antcall>
+  </target>
+
+  <target name="fopnew" depends="clean,build-fopnew">
+    <antcall target="jar">
+      <param name="variant" value="css2fopnew" />
+    </antcall>
+  </target>
+
+  <target name="xinc" depends="clean,build-xinc">
+    <antcall target="jar">
+      <param name="variant" value="css2xinc" />
+    </antcall>
+  </target>
+
+  <target name="pack-source" depends="clean">
+    <zip destfile="css2xslfo${version}_src.zip">
+      <zipfileset dir="." includes="doc/**,dtd/**,lib_src/**,res/**,src/**,build.xml,build.properties" prefix="css2xslfo" />
+      <zipfileset dir="." prefix="css2xslfo">
+        <patternset refid="lib-include" />
+      </zipfileset>
+    </zip>
+  </target>
+
+</project>
